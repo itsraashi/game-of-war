@@ -13,23 +13,23 @@ def update_table(winner):
     table = connector.connect(host, user, password, database)
     cursor = table.cursor()
 
-    cursor.execute("SELECT num_wins FROM winner_history WHERE player = " + str(winner) + ";")
+    cursor.execute("SELECT NumWins FROM WinnerHistory WHERE PlayerId = " + str(winner) + ";")
     num_wins = cursor.fetchone()
 
-    cursor.execute("UPDATE winner_history SET num_wins = " + str(num_wins[0] + 1) + "WHERE player = " + str(winner) + ";")
+    cursor.execute("UPDATE WinnerHistory SET NumWins = " + str(num_wins[0] + 1) + "WHERE PlayerId = " + str(winner) + ";")
     table.commit()
 
 def clear_table():
     table = connector.connect(host, user, password, database)
     cursor = table.cursor()
 
-    cursor.execute("UPDATE winner_history SET num_wins = 0;")
+    cursor.execute("UPDATE WinnerHistory SET NumWins = 0;")
     table.commit()
 
 def fetch_history():
     table = connector.connect(host, user, password, database)
     cursor = table.cursor()
 
-    cursor.execute("SELECT * FROM games")
+    cursor.execute("SELECT * FROM WinnerHistory")
 
     return cursor.fetchall()
