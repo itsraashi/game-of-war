@@ -1,3 +1,6 @@
+# Source: Used Flask API documentation, as starting point for endpoints
+# https://flask.palletsprojects.com/en/2.3.x/api/?highlight=routing
+
 from flask import Flask
 from table_functions import *
 import random
@@ -118,5 +121,25 @@ class War():
                 cards_pool.extend(player_1_pile)
                 cards_pool.extend(player_2_pile)
 
+        return self.winner
 
 
+def play_war():
+    war = War()
+    winner = war.play_war()
+
+    update_table(winner)
+
+    message = "Winner: Player " + str(winner)
+    return message
+
+def lifetime_wins():
+    all_results = fetch_history()
+
+    message = "Player " + str(all_results[0][0]) + ": " + str(all_results[0][1]) + " wins"
+    message += "Player " + str(all_results[1][0]) + ": " + str(all_results[1][1]) + " wins"
+
+    return message
+
+app.add_url_rule("/play_game", view_func=play_war)
+app.add_url_rule("/view_stats", view_func=lifetime_wins)
