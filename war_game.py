@@ -1,9 +1,8 @@
 from flask import Flask
-import mysql.connector
+from table_functions import *
+import random
 
 app = Flask(__name__)
-
-@app.route('/') # todo: map route to function
 
 class Card():
     def __init__(self, suit, card_name, value):
@@ -85,6 +84,14 @@ class War():
                     player_2_pile.append(self.player_2.hand.pop()) # face-down card
                     player_2_pile.append(self.player_2.hand.pop()) # face-up card
                 except:
+                    if len(self.player_1.hand) == 0:
+                        self.winner = 2
+                        self.war_condition = False
+                        break
+                    if len(self.player_2.hand) == 0:
+                        self.winner = 1
+                        self.war_condition = False
+                        break
                     break
 
                 if len(self.player_1.hand) == 0:
