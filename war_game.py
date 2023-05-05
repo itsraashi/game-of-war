@@ -57,15 +57,22 @@ class War():
         self.player_1.hand = self.all_cards[:26]
         self.player_2.hand = self.deck[26:]
 
+    def check_if_winner(self):
+        if len(self.player_1.hand) == 0:
+            self.winner = 2
+            return True
+        if len(self.player_2.hand) == 0:
+            self.winner = 1
+            return True
+
+        return False
+
     def play_war(self):
         self.deal_cards()
 
         while(True):
 
-            if len(self.player_1.hand) == 0:
-                self.winner = 2
-            if len(self.player_2.hand) == 0:
-                self.winner = 1
+            if check_if_winner(): break
 
             cards_pool = [self.player_1.hand.pop(), self.player_2.hand.pop()]
 
@@ -87,28 +94,16 @@ class War():
                     player_2_pile.append(self.player_2.hand.pop()) # face-down card
                     player_2_pile.append(self.player_2.hand.pop()) # face-up card
                 except:
-                    if len(self.player_1.hand) == 0:
-                        self.winner = 2
-                        self.war_condition = False
-                        break
-                    if len(self.player_2.hand) == 0:
-                        self.winner = 1
-                        self.war_condition = False
-                        break
+                    if check_if_winner(): self.war_condition = False
                     break
 
-                if len(self.player_1.hand) == 0:
-                    self.winner = 2
-                    self.war_condition = False
-                    break
-                if len(self.player_2.hand) == 0:
-                    self.winner = 1
+                if check_if_winner():
                     self.war_condition = False
                     break
 
                 round_winner = None
                 if player_1_pile[-1].value > player_2_pile[-1].value: round_winner = self.player_1
-                elif player_1_pile[-1].value > player_2_pile[-1].value: round_winner = self.player_2
+                elif player_1_pile[-1].value < player_2_pile[-1].value: round_winner = self.player_2
 
                 if round_winner:
                     round_winner.extend_hand(cards_pool)
@@ -127,6 +122,9 @@ class War():
 def play_war():
     war = War()
     winner = war.play_war()
+
+    while not winner:
+        winner = war.play_war()
 
     update_table(winner)
 
