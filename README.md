@@ -1,1 +1,1 @@
---
+This is a repository that implements a two-player version of the Game of War, via a web application implemented using Python and SQL. There are two endpoints <code> /play_game </code> and <code> /view_stats </code> that allow a user to run a game and view the lifetime wins of each player. Additionally, a test suite is included, to ensure that the game performs as expected.
